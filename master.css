@@ -1,0 +1,41 @@
+body{
+    background-color: orange;
+}
+.container{
+    text-align: center;
+    padding: 300px;
+}
+button{
+    border-radius:12px;
+    background-color: lightgreen;
+    padding:20px;
+    cursor: pointer;
+    border: 1;
+    margin-right:30px;
+}
+
+h1{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.link, .link2{
+    all: unset;
+    padding: 20px;
+    justify-content: space-between;
+}
+
+
+.form{
+    text-align: center;
+    padding: 300px;
+    
+}
+
+.input{
+   
+    margin-right: 190px;
+    padding: 16px;
+    border-radius: 12px; 
+    border: 1;
+}
