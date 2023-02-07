@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Ocr to text</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='master.css') }}">
+</head>
+<body>
+    <div class="container" >
+        <h1>OCR-TEXT-PROJECT</h1>
+        <button><a class="link" href="{{url_for('convert_ocr')}}"> document to text</a></button>
+       <button> <a class="link2" href="{{url_for('convert_image')}}"> image to text </a></button>
+    </div>
+
+</body>
+</html>
