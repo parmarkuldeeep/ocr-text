@@ -1,5 +1,6 @@
-from flask import Flask, request, render_template, jsonify
-import pdfplumber
+
+from flask import Flask, request, render_template
+import PyPDF2
 import pytesseract
 from PIL import Image
 
@@ -14,35 +15,32 @@ def home():
 @app.route('/conver_ocr', methods=['GET','POST'])
 def convert_ocr():
     if request.method == 'POST':
-
-        files = request.files.getlist('file')
-        result = ''
-        page_count = 0
-        for file in files:
-            with pdfplumber.open(file) as pdf:
-                for page in pdf.pages:
-                    if page_count == 5:
-                        return "Error: Maximum number of pages exceeded (5 pages)"
-                    result += page.extract_text()
-                    page_count += 1
-        return result
+        file = request.files['file']
+        pdf_file = PyPDF2.PdfReader(file)
+        num_pages = len(pdf_file.pages)
+        if num_pages > 5:
+            return "Error: Maximum of 5 pages exceeded."
+        text = ""
+        for page in range(num_pages):
+            text += pdf_file.pages[page].extract_text()
+        return text
     return render_template('page1.html')
 
 @app.route('/convert_image', methods=['GET','POST'])
 def convert_image():
     if request.method=='POST':
-        files = request.files.getlist("images")
-        if len(files) > 5:
-            return jsonify({"error": "Exceeded maximum number of pages (5)"})
+        files = request.files.getlist('file')
+        text_data = ""
+        count = 0
 
-        results = []
         for file in files:
-            image = Image.open(file)
-            result = pytesseract.image_to_string(image)
-            result = result.replace("\u201c", "").replace("\u00ab", "").replace(">), ", "").replace("\n", "").replace("<", "")
-            results.append(result)
-
-        return jsonify({"results": results})
+            if count == 5:
+                return "Error: Maximum number of pages exceeded (5 pages)"
+            img = Image.open(file)
+            text = pytesseract.image_to_string(img)
+            text_data += text + "\n"
+            count += 1
+        return text_data
     return render_template('page2.html')
 
 
